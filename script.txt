@@ -1,0 +1,78 @@
+// ==UserScript==
+// @name         blocktankio
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://blocktanks.io/*
+// @icon         https://www.google.com/s2/favicons?domain=google.com
+// @grant        none
+// ==/UserScript==
+console.log('yeah');
+
+var tag = document.createElement("p");
+var text = document.createTextNode("");
+tag.appendChild(text);
+tag.style.position = "absolute";
+tag.style.top = "50px";
+tag.style.left = "10px";
+tag.id = "hacks";
+
+var tag2 = document.createElement("p");
+var text2 = document.createTextNode("->");
+tag2.appendChild(text2);
+tag2.style.position = "fixed";
+tag2.style.top = "32%";
+tag2.style.left = "47.5%";
+
+tag2.style.transform = "translate(-50%,-50%)";
+tag2.style.transformOrigin = "50% 50%";
+tag2.style.transform = "rotate(0deg)";
+tag2.style.zIndex = "1100";
+tag2.style.fontSize = "100px"
+tag2.id = "hackysacky";
+
+document.querySelector('body').appendChild(tag);
+document.querySelector('body').appendChild(tag2);
+setInterval(function(){
+    tag = document.getElementById('hacks');
+    document.getElementById('hacks').innerText = "";
+    document.getElementById('hacks').innerText += "X:"+server_tanks[name].body.position.x+",Y:"+server_tanks[name].body.position.y;
+    nearest = null;
+    a = 99999999;
+    for (i in Object.keys(server_tanks)){
+        if (Object.keys(server_tanks)[i] != name && server_tanks[Object.keys(server_tanks)[i]].team != server_tanks[name].team){
+        document.getElementById('hacks').innerText += "\n"+server_tanks[Object.keys(server_tanks)[i]].displayName+" - X:"+server_tanks[Object.keys(server_tanks)[i]].body.position.x+",Y:"+server_tanks[Object.keys(server_tanks)[i]].body.position.y;
+
+        if (a > Math.hypot(Math.abs(server_tanks[Object.keys(server_tanks)[i]].body.position.x-server_tanks[name].body.position.x),Math.abs(server_tanks[Object.keys(server_tanks)[i]].body.position.y-server_tanks[name].body.position.y))){
+            a = Math.hypot(Math.abs(server_tanks[Object.keys(server_tanks)[i]].body.position.x-server_tanks[name].body.position.x),Math.abs(server_tanks[Object.keys(server_tanks)[i]].body.position.y-server_tanks[name].body.position.y));
+            nearest = server_tanks[Object.keys(server_tanks)[i]]
+
+        }
+        }
+
+    }
+    ey = server_tanks[name].body.position.y;
+    ex = server_tanks[name].body.position.x;
+    cy = nearest.body.position.y;
+    cx = nearest.body.position.x;
+
+    var dy = ey - cy;
+    var dx = ex - cx;
+    var theta = Math.atan2(dy, dx);
+    theta *= (180 / Math.PI);
+    if (ARM < 90 && ARM > -90){
+        k = theta - 90
+        theta = k
+    }
+    if (ARM < -90){
+        k = theta
+        theta = k-90
+    }
+    if (ARM > 90){
+        k = theta
+        theta = k-90
+    }
+    document.getElementById('hacks').innerText += "\n\nNearest : "+nearest.displayName+", Distance : "+Math.round(a);
+    tag2.style.transform = "rotate("+(theta-90)+"deg)";
+},1);
