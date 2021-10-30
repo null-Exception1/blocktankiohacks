@@ -11,4 +11,6 @@ third, click on Create a new script
 
 fourth, in the editor, select all the code and paste it with the code written in script.txt
 
+press ctrl+s
+
 now whenever you open blocktanks.io it will run the script, so now u can ENJOY!
